@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-  ListaContigua *lista; 
+  ListaContigua *lista = nullptr; 
   ListaContigua* numeros;
   int incremento,numero,posicion;
   char operacion;
