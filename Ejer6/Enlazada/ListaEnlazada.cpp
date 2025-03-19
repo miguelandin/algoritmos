@@ -15,10 +15,12 @@ ListaEnlazada::ListaEnlazada()
 
 ListaEnlazada::~ListaEnlazada()
 {
+    Nodo* actual = lista;
+    Nodo* siguiente;
     for (int i = 0; i < this->n; i++) {
-        Nodo* temp = lista; // apunta al nodo
-        lista = lista->siguienteNodo; // si itera al siguiente nodo
-        delete temp; // se libera el nodo
+        siguiente = actual->siguienteNodo; // se guarda el siguiente nodo
+        delete actual; // se libera el nodo actual
+        actual = siguiente; // el actual pasa a ser el siguiente
     }
 }
 
@@ -27,9 +29,10 @@ Nodo* ListaEnlazada::getNodo(int pos)
     Nodo* res = lista;
     int i = 0;
 
-    while (i != pos)
-        res = lista->siguienteNodo;
-
+    while (i != pos) {
+        res = res->siguienteNodo;
+        i++;
+    }
     return res;
 }
 
@@ -54,12 +57,18 @@ void ListaEnlazada::insertar(int pos, int nuevo)
     nuevoNodo->elemento = nuevo; // se inserta el valor
     nuevoNodo->siguienteNodo = getNodo(pos)->siguienteNodo; // se inserta la posición de su siguiente nodo
     getNodo(pos)->siguienteNodo = nuevoNodo; // se cambia el siguiente nodo del anterior por el nuevo nodo
+    n++;
 }
 
 void ListaEnlazada::eliminar(int pos)
 {
-    getNodo(pos - 1)->siguienteNodo = getNodo(pos)->siguienteNodo; // se desenlaza
-    delete getNodo(pos); // se libera memoria
+    if (pos == 0) {
+        delete getNodo(pos);
+    } else {
+        getNodo(pos - 1)->siguienteNodo = getNodo(pos)->siguienteNodo; // se desenlaza
+        delete getNodo(pos); // se libera memoria}
+        n--;
+    }
 }
 
 void ListaEnlazada::concatenar(ListaEnlazada* conectar)
@@ -72,6 +81,7 @@ void ListaEnlazada::concatenar(ListaEnlazada* conectar)
 
     // unimos el último nodo de nuestra lista con el primero de la otra lista
     temp->siguienteNodo = conectar->lista;
+    n += conectar->n; // se añaden los n de la otra lista a la nuestra
 }
 
 int ListaEnlazada::buscar(int val)
