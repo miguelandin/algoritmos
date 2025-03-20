@@ -7,84 +7,102 @@
         exit(0);                           \
     }
 
-ListaEnlazada::ListaEnlazada()
+ListaEnlazada::ListaEnlazada() // T(n) = 1, M(n) = 1
 {
     n = 0;
     lista = nullptr;
 }
 
-ListaEnlazada::~ListaEnlazada()
+ListaEnlazada::~ListaEnlazada() // T(n) = n + 1, M(n) = 1
 {
     Nodo* actual = lista;
     Nodo* siguiente;
-    for (int i = 0; i < this->n; i++) {
+    while (actual != NULL) {
         siguiente = actual->siguienteNodo; // se guarda el siguiente nodo
         delete actual; // se libera el nodo actual
         actual = siguiente; // el actual pasa a ser el siguiente
     }
 }
 
-Nodo* ListaEnlazada::getNodo(int pos)
+Nodo* ListaEnlazada::getNodo(int pos) // T(n) = n + 1, M(n) = 1
 {
-    Nodo* res = lista;
-    int i = 0;
+    assertdomjudge(pos >= 0 && pos < n);
 
-    while (i != pos) {
+    Nodo* res = lista;
+
+    for (int i = 0; i < pos; i++) {
         res = res->siguienteNodo;
-        i++;
     }
+
     return res;
 }
 
-int ListaEnlazada::getValor(int pos)
+int ListaEnlazada::getValor(int pos) // T(n) = n + 1, M(n) = 1
 {
     return getNodo(pos)->elemento;
 }
 
-void ListaEnlazada::setValor(int pos, int nuevo)
+void ListaEnlazada::setValor(int pos, int nuevo) // T(n) = n + 1, M(n) = 1
 {
     getNodo(pos)->elemento = nuevo;
 }
 
-int ListaEnlazada::getN()
+int ListaEnlazada::getN() // T(n) = 1, M(n) = 1
 {
     return this->n;
 }
 
-void ListaEnlazada::insertar(int pos, int nuevo)
+void ListaEnlazada::insertar(int pos, int nuevo) // T(n) = n + 1, M(n) = 1
 {
-    Nodo* nuevoNodo = new Nodo;
+    assertdomjudge(pos >= 0 && pos <= n);
+
+    Nodo* nuevoNodo = new Nodo(); // se crea un nuevo nodo
     nuevoNodo->elemento = nuevo; // se inserta el valor
-    nuevoNodo->siguienteNodo = getNodo(pos)->siguienteNodo; // se inserta la posición de su siguiente nodo
-    getNodo(pos)->siguienteNodo = nuevoNodo; // se cambia el siguiente nodo del anterior por el nuevo nodo
-    n++;
-}
 
-void ListaEnlazada::eliminar(int pos)
-{
-    if (pos == 0) {
-        delete getNodo(pos);
+    if (pos == 0) { // si es al inicio de la lista
+        nuevoNodo->siguienteNodo = lista; // el siguiente elemento del nuevo nodo es el primero de la lista antigua
+        lista = nuevoNodo; // el primer elemento pasa a ser el nuevoNodo
     } else {
-        getNodo(pos - 1)->siguienteNodo = getNodo(pos)->siguienteNodo; // se desenlaza
-        delete getNodo(pos); // se libera memoria}
-        n--;
+        Nodo* anterior = getNodo(pos - 1);
+        nuevoNodo->siguienteNodo = anterior->siguienteNodo; // apunta al siguiente del antiguo nodo en pos
+        anterior->siguienteNodo = nuevoNodo; // el siguiente Nodo pasa a ser el nuevo Nodo
     }
+
+    n++; // incrementa el número de elementos
 }
 
-void ListaEnlazada::concatenar(ListaEnlazada* conectar)
+void ListaEnlazada::eliminar(int pos) // T(n) = n + 1, M(n) = 1
 {
-    Nodo* temp = lista; // puntero temporal
+    assertdomjudge(pos >= 0 && pos < n);
 
-    // itera hasta encontrar el ultimo elemento de la lista
-    while (temp->siguienteNodo != NULL)
-        temp = temp->siguienteNodo;
+    Nodo* eliminar;
 
-    // unimos el último nodo de nuestra lista con el primero de la otra lista
-    temp->siguienteNodo = conectar->lista;
-    n += conectar->n; // se añaden los n de la otra lista a la nuestra
+    if (pos == 0) {
+        eliminar = lista; // eliminar apunta al primer Nodo
+        lista = lista->siguienteNodo; // lista pasa a empezar por el siguienteNodo
+    } else {
+        Nodo* anterior = getNodo(pos - 1); // se obtiene el nodo anterior al que queremos eliminar
+        eliminar = anterior->siguienteNodo; // eliminar apunta al nodo que queremo borrar
+        anterior->siguienteNodo = eliminar->siguienteNodo; // se desenlaza el nodo que queremos eliminar
+    }
+    delete eliminar; // se libera la memoria del puntero eliminar
+    n--; // se decrementa el número de elementos
 }
 
-int ListaEnlazada::buscar(int val)
+void ListaEnlazada::concatenar(ListaEnlazada* conectar) // T(n) = n + 1, M(n) = 1
+{
+    if (conectar->n == 0) // si la lista está vacia, no se hace nada
+        return;
+
+    if (n == 0) // si nuestra lista está vacía se enlaza desde el principio
+        lista = conectar->lista;
+    else
+        getNodo(n - 1)->siguienteNodo = conectar->lista; // el siguienteNodo del ultimo pasa a ser el primero de la otra lista
+
+    this->n += conectar->n; // actualiza el número de elementos
+}
+
+int ListaEnlazada::buscar(int val) // T(n) = n + 1, M(n) = 1
 {
     int res = -1, i = 0;
     Nodo* temp = lista;
