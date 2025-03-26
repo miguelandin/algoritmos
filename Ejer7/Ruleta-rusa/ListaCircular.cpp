@@ -5,16 +5,16 @@
         exit(0);                           \
     }
 
-ListaCircular::ListaCircular()
+ListaCircular::ListaCircular() // T(n) = M(n) = O(1)
 {
     n = 0;
     lista = nullptr;
 }
 
-Nodo* ListaCircular::getNodo(int pos)
+Nodo* ListaCircular::getNodo(int pos) // T(n) = O(n), M(n) = O(1)
 {
     assertdomjudge(pos >= 0);
-    
+
     Nodo* res = lista; // se inicializa en la pos inicial
 
     if (pos > n / 2) // se decide por que dirección ir
@@ -27,7 +27,7 @@ Nodo* ListaCircular::getNodo(int pos)
     return res;
 }
 
-void ListaCircular::insertar(int pos, string nuevo)
+void ListaCircular::insertar(int pos, string nuevo) // T(n) = O(n), M(n) = O(1)
 {
     Nodo* nuevoNodo = new Nodo(); // se crea un nuevo nodo
     nuevoNodo->elemento = nuevo; // se establece su valor
@@ -50,7 +50,7 @@ void ListaCircular::insertar(int pos, string nuevo)
     n++;
 }
 
-void ListaCircular::eliminar(int pos)
+void ListaCircular::eliminar(int pos) // T(n) = O(n), M(n) = O(1)
 {
     Nodo* anterior = getNodo(pos == 0 ? n - 1 : pos - 1); // coge el anterior
     Nodo* eliminar = anterior->siguienteNodo; // nodo a eliminar
@@ -63,12 +63,12 @@ void ListaCircular::eliminar(int pos)
     n--;
 }
 
-string ListaCircular::getValor(int pos)
+string ListaCircular::getValor(int pos) // T(n) = O(n), M(n) = O(1)
 {
     return getNodo(pos)->elemento;
 }
 
-void ListaCircular::setValor(int pos, string nuevo)
+void ListaCircular::setValor(int pos, string nuevo) // T(n) = O(n), M(n) = O(1)
 {
     getNodo(pos)->elemento = nuevo;
 }
@@ -78,20 +78,20 @@ int ListaCircular::getN()
     return n;
 }
 
-void ListaCircular::girar(int p)
+void ListaCircular::girar(int p) // T(n) = O(n), M(n) = O(1)
 {
     Nodo* principio = lista; // para que gira la lista se cambia el principio
     if (p >= 0)
         for (int i = 0; i < p; i++) // hacia la derecha
             principio = principio->siguienteNodo;
     else
-        for (int i = p; i<0; i++) // hacia la izquierda
+        for (int i = p; i < 0; i++) // hacia la izquierda
             principio = principio->anteriorNodo;
 
     lista = principio; // se actualiza el primer Nodo
 }
 
-ListaCircular::~ListaCircular()
+ListaCircular::~ListaCircular() // T(n) = O(n), M(n) = O(1)
 {
     for (int i = 0; i < n; i++)
         eliminar(0);
