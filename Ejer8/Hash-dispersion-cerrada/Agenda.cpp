@@ -1,7 +1,7 @@
 #include "Agenda.h"
 #include "assertdomjudge.h"
 
-Agenda::Agenda(int capacidad)
+Agenda::Agenda(int capacidad) // T(n) = M(n) = O(n)
 {
     assertdomjudge(capacidad > 0); // capacidad tiene que ser natural
 
@@ -17,7 +17,7 @@ Agenda::Agenda(int capacidad)
         vacias[i] = true;
 }
 
-Agenda::~Agenda()
+Agenda::~Agenda() // T(n) = M(n) = O(1)
 {
     delete[] nombres;
     delete[] telefonos;
@@ -29,7 +29,7 @@ int Agenda::obtenerPosicion(long clave) // T(n) = M(n) = O(1)
     return clave % capacidad;
 }
 
-int Agenda::buscarContacto(long telefono)
+int Agenda::buscarContacto(long telefono) // T(n) = O(n), M(n) = 1
 {
     int res = -1; // -1 por defecto por si no se encuentra
     int pos = obtenerPosicion(telefono); // obtenemos la posicion que debería
@@ -48,7 +48,7 @@ int Agenda::buscarContacto(long telefono)
     return res;
 }
 
-int Agenda::buscarHueco(long telefono)
+int Agenda::buscarHueco(long telefono) // T(n) = O(n), M(n) = O(1)
 {
     int res = -1;
     int pos = obtenerPosicion(telefono);
@@ -65,7 +65,7 @@ int Agenda::buscarHueco(long telefono)
     return res;
 }
 
-bool Agenda::isLlena()
+bool Agenda::isLlena() // T(n) = M(n) = O(1)
 {
     return n == capacidad;
 }
@@ -78,7 +78,7 @@ bool Agenda::existeContacto(long telefono)
         return true;
 }
 
-string Agenda::getContacto(long telefono)
+string Agenda::getContacto(long telefono) // T(n) = O(n), M(n) = O(1)
 {
     int pos = buscarContacto(telefono); // se obtiene la posicion del contacto
     assertdomjudge(pos != -1); // comprueba que exista
@@ -86,7 +86,7 @@ string Agenda::getContacto(long telefono)
     return nombres[pos]; // devuelve el nombre
 }
 
-void Agenda::introducirContacto(long telefono, string contacto)
+void Agenda::introducirContacto(long telefono, string contacto) // T(n) = O(n), M(n) = O(1)
 {
     int pos = buscarHueco(telefono); // se obtiene la posicion de un hueco
     assertdomjudge(pos != -1); // comprueba que se encontró
@@ -98,7 +98,7 @@ void Agenda::introducirContacto(long telefono, string contacto)
     n++; // aumenta el numero de elementos
 }
 
-void Agenda::eliminarContacto(long telefono)
+void Agenda::eliminarContacto(long telefono) // T(n) = O(n), M(n) = O(1)
 {
     int pos = buscarContacto(telefono); // busca la posicion del contacto
 
