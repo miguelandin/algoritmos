@@ -1,8 +1,6 @@
 #include "ColaPrioridad.h"
 #include "assertdomjudge.h"
 
-ColaPrioridad::ColaPrioridad() { } // T(n) = M(n) = O(1)
-
 void ColaPrioridad::encolar(int num) // T(n) = O(log n), M(n) = O(1)
 
 {

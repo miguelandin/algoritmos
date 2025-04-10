@@ -10,8 +10,6 @@ protected:
 
 public:
 
-    ColaPrioridad();
-
 	void encolar(int nuevoElemento);
 
 	int desencolar();
