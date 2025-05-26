@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+class Agenda{
+    int capacidad, n;
+    string * nombres;
+    long * telefonos;
+    bool * vacias;
+    bool * borradas;
+public:
+    Agenda(int capacidad);
+    ~Agenda();
+    int obtenerPosicion(long telefono);
+    int buscarContacto(long telefono);
+    int buscarHueco(long telefono);
+    bool isLlena();
+    bool existeContacto(long telefono);
+    string getContacto(long telefono);
+    void introducirContacto(long telefono, string contacto);
+    void eliminarContacto(long telefono);
+    void imprimir();
+};
